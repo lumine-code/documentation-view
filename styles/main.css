@@ -1,0 +1,96 @@
+.documentation-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 180px;
+  overflow: hidden;
+  color: var(--text-color);
+  background: var(--context-help-background-color, var(--tool-panel-background-color));
+}
+.documentation-view-header {
+  display: flex;
+  gap: calc(var(--component-padding) / 2);
+  align-items: center;
+  padding: calc(var(--component-padding) / 2);
+  border-bottom: 1px solid var(--context-help-border-color, var(--base-border-color));
+}
+.documentation-view-source {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.documentation-view-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  user-select: text;
+}
+.documentation-view-status {
+  padding: var(--component-padding);
+}
+.context-help-content {
+  font-family: var(--font-family);
+  font-size: var(--prose-font-size);
+  line-height: var(--prose-line-height);
+  color: var(--text-color);
+  user-select: text;
+}
+.context-help-section {
+  padding: calc(var(--component-padding) / 2) var(--component-padding);
+}
+.context-help-section + .context-help-section {
+  border-top: 1px solid var(--context-help-border-color, var(--base-border-color));
+}
+.context-help-section.context-help-provided {
+  padding: 0;
+}
+.context-help-section > :first-child {
+  margin-top: 0;
+}
+.context-help-section > :last-child {
+  margin-bottom: 0;
+}
+.context-help-content pre,
+.context-help-content lumine-text-editor {
+  padding: 0.3em 0.5em;
+  border: 1px solid var(--context-help-border-color, var(--base-border-color));
+  border-radius: var(--component-border-radius);
+  color: var(--syntax-text-color);
+  background-color: color-mix(
+    in srgb,
+    var(--syntax-background-color) 80%,
+    var(--context-help-background-color, var(--tool-panel-background-color))
+  );
+  user-select: text;
+}
+.context-help-content pre {
+  font-family: var(--editor-font-family);
+  font-size: var(--editor-font-size);
+  word-break: normal;
+}
+.context-help-content lumine-text-editor {
+  margin: 0 0 0.5rem;
+}
+.context-help-content lumine-text-editor:last-child {
+  margin-bottom: 0;
+}
+.context-help-content code {
+  padding: 0 0.3em;
+  border-radius: var(--component-border-radius);
+  background-color: rgb(from var(--text-color) r g b / 8%);
+}
+.context-help-content pre code {
+  padding: 0;
+  background: none;
+}
+.context-help-content hr {
+  height: 1px;
+  margin: 0.6em 0;
+  border: none;
+  background: var(--context-help-border-color, var(--base-border-color));
+}
+.context-help-plaintext {
+  white-space: pre-wrap;
+}

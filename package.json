@@ -1,0 +1,71 @@
+{
+  "name": "documentation-view",
+  "author": "lumine-code",
+  "description": "Read documentation and contextual help in a persistent dock panel.",
+  "repository": "https://github.com/lumine-code/documentation-view",
+  "bugs": {
+    "url": "https://github.com/lumine-code/documentation-view/issues"
+  },
+  "keywords": [
+    "context-help",
+    "quick-info",
+    "docstring",
+    "tooltip",
+    "lsp"
+  ],
+  "version": "1.0.0",
+  "license": "MIT",
+  "engines": {
+    "lumine": "^1.0.0"
+  },
+  "main": "./lib/main",
+  "files": [
+    "docs",
+    "keymaps",
+    "lib",
+    "menus",
+    "spec",
+    "styles"
+  ],
+  "scripts": {
+    "test": "lumine --test spec",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "providedServices": {
+    "context-help.registry": {
+      "versions": {
+        "1.0.0": "provideContextHelpRegistry"
+      }
+    },
+    "context-help.panel": {
+      "versions": {
+        "1.0.0": "provideContextHelpPanel"
+      }
+    },
+    "background-tips.provider": {
+      "versions": {
+        "1.0.0": "provideBackgroundTips"
+      }
+    }
+  },
+  "consumedServices": {
+    "context-help.provider": {
+      "versions": {
+        "^1.0.0": "consumeContextHelp"
+      }
+    }
+  },
+  "deserializers": {
+    "documentation-view/DocumentationView": "deserializeDocumentationView"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.11.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-n": "^18.4.0",
+    "globals": "^17.12.0",
+    "prettier": "^3.9.9"
+  }
+}

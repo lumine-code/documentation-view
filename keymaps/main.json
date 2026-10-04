@@ -1,0 +1,9 @@
+{
+  "lumine-workspace": {
+    "alt-shift-d": "documentation-view:toggle-focus"
+  },
+  ".documentation-view": {
+    "escape": "documentation-view:return-to-editor",
+    "f5": "documentation-view:refresh"
+  }
+}
