@@ -15,11 +15,6 @@
     }
   ],
   "context-menu": {
-    "lumine-text-editor:not([mini])": [
-      { "type": "separator" },
-      { "label": "Open Documentation", "command": "documentation-view:open" },
-      { "type": "separator" }
-    ],
     ".documentation-view": [
       { "type": "separator" },
       { "label": "Refresh", "command": "documentation-view:refresh" },
