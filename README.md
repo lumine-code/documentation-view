@@ -33,7 +33,7 @@ Commands available in `.documentation-view`:
 
 ## Usage
 
-Install a provider for the languages or information you need. A language-server setup supplies documentation through `ide-client`; `linter` can supply diagnostics. The panel works without `hover`, and `hover` uses the same registry when it is installed. Signature help remains a separate feature of `hover`.
+Install a provider for the languages or information you need. A language-server setup supplies documentation through `ide`; `linter` can supply diagnostics. The panel works without `hover`, and `hover` uses the same registry when it is installed. Signature help remains a separate feature of `hover`.
 
 Run `documentation-view:open` from an editor, or choose **Open in Documentation View** in a hover tooltip. Opening an existing tooltip keeps its original source position, which can differ from the cursor position. Refresh asks about that saved position, clamped to the current buffer if the source has changed; it does not follow later cursor movement or the active file. The header indicates when the source has changed or closed. Returning to the editor focuses the currently active editor.
 
