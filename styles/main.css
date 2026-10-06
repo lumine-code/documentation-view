@@ -9,9 +9,9 @@
 }
 .documentation-view-header {
   display: flex;
-  gap: calc(var(--component-padding) / 2);
+  gap: calc(var(--ui-spacing) / 2);
   align-items: center;
-  padding: calc(var(--component-padding) / 2);
+  padding: calc(var(--ui-spacing) / 2);
   border-bottom: 1px solid var(--context-help-border-color, var(--base-border-color));
 }
 .documentation-view-source {
@@ -28,17 +28,17 @@
   user-select: text;
 }
 .documentation-view-status {
-  padding: var(--component-padding);
+  padding: var(--ui-spacing);
 }
 .context-help-content {
-  font-family: var(--font-family);
+  font-family: var(--ui-font-family);
   font-size: var(--prose-font-size);
   line-height: var(--prose-line-height);
   color: var(--text-color);
   user-select: text;
 }
 .context-help-section {
-  padding: calc(var(--component-padding) / 2) var(--component-padding);
+  padding: calc(var(--ui-spacing) / 2) var(--ui-spacing);
 }
 .context-help-section + .context-help-section {
   border-top: 1px solid var(--context-help-border-color, var(--base-border-color));
@@ -56,7 +56,7 @@
 .context-help-content lumine-text-editor {
   padding: 0.3em 0.5em;
   border: 1px solid var(--context-help-border-color, var(--base-border-color));
-  border-radius: var(--component-border-radius);
+  border-radius: var(--ui-border-radius);
   color: var(--syntax-text-color);
   background-color: color-mix(
     in srgb,
@@ -78,7 +78,7 @@
 }
 .context-help-content code {
   padding: 0 0.3em;
-  border-radius: var(--component-border-radius);
+  border-radius: var(--ui-border-radius);
   background-color: rgb(from var(--text-color) r g b / 8%);
 }
 .context-help-content pre code {
