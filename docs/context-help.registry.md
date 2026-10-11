@@ -98,7 +98,7 @@ module.exports = {
 
 ## Behavior
 
-Requests collect all matching providers in descending priority order. Provider failures are isolated and logged; removing a registration excludes its pending answer. Each call has its own cancellation signal, so requests for a tooltip and a dock do not supersede one another. The consumer controls whether its own newer request cancels its previous one. Editing or destroying the source editor cancels unfinished requests so an answer for the previous buffer contents cannot replace current help.
+Requests collect all matching providers in descending priority order. Provider failures are isolated and logged; removing a registration excludes its pending answer. Each call has its own cancellation signal, so requests for a tooltip and a dock do not supersede one another. The consumer controls whether its own newer request cancels its previous one. Editing, renaming, changing the grammar, or destroying the source editor cancels unfinished requests so an answer for its previous context cannot replace current help.
 
 Rendering the same snapshot twice creates independent DOM and resources. A panel can display the exact snapshot already shown by a tooltip, without a second provider request or moving the tooltip's DOM. Cursor movement, file switches, and later provider requests do not mutate that snapshot.
 
