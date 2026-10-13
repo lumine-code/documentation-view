@@ -13,6 +13,8 @@ Request help at the cursor or open an existing hover answer in the panel. The pa
 - **Combined providers**: shows every matching provider's content in priority order.
 - **Independent rendering**: renders markdown, plain text, and interactive provider content separately for each surface.
 
+![Keep the function signature and its documentation beside the source.](.github/demo.png)
+
 ## Installation
 
 To install `documentation-view` search for it in the Install pane of the Lumine settings, or run the command `lumine --install lumine-code/documentation-view`.

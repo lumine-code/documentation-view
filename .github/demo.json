@@ -1,0 +1,16 @@
+{
+  "title": "documentation-view",
+  "description": "Keep the function signature and its documentation beside the source.",
+  "recordedOn": "2026-10-13",
+  "sourceRevision": "37d33305a58d44c6e4e8545d49e426e0b1036e7c",
+  "mode": "normal",
+  "fontSettings": "default",
+  "images": [
+    {
+      "file": "demo.png",
+      "label": "Keep the function signature and its documentation beside the source.",
+      "width": 1100,
+      "height": 490
+    }
+  ]
+}
