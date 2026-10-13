@@ -8,7 +8,9 @@
           "submenu": [
             {
               "label": "Documentation View",
-              "command": "documentation-view:toggle"
+              "command": "documentation-view:toggle",
+              "group": "panels",
+              "order": 10
             }
           ]
         }
@@ -19,7 +21,9 @@
       "submenu": [
         {
           "label": "Show Symbol Documentation",
-          "command": "documentation-view:open"
+          "command": "documentation-view:open",
+          "group": "documentation",
+          "order": 30
         }
       ]
     },
