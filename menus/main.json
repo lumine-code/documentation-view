@@ -1,6 +1,29 @@
 {
   "menu": [
     {
+      "label": "View",
+      "submenu": [
+        {
+          "label": "Toggle View",
+          "submenu": [
+            {
+              "label": "Documentation View",
+              "command": "documentation-view:toggle"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Help",
+      "submenu": [
+        {
+          "label": "Show Symbol Documentation",
+          "command": "documentation-view:open"
+        }
+      ]
+    },
+    {
       "label": "Packages",
       "submenu": [
         {
