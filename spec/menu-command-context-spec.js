@@ -32,7 +32,23 @@ describe("documentation-view menu commands in captured presentation contexts", (
     main = first = second = firstPane = notebook = lease = captured = null;
   });
 
-  it("keeps the invoking window document when the global active editor is elsewhere", async () => {
+  it("offers symbol help on a document editor while panel toggles remain global", async () => {
+    const workspace = lumine.workspace.getElement();
+    expect(lumine.commands.canDispatch(workspace, "documentation-view:toggle")).toBe(true);
+    expect(lumine.commands.canDispatch(workspace, "documentation-view:open")).toBe(false);
+    expect(lumine.commands.canDispatch(first.getElement(), "documentation-view:open")).toBe(true);
+    const mini = lumine.workspace.buildTextEditor({ mini: true });
+    workspace.appendChild(mini.getElement());
+    expect(lumine.commands.canDispatch(mini.getElement(), "documentation-view:open")).toBe(false);
+    mini.destroy();
+
+    await lumine.commands.dispatch(first.getElement(), "documentation-view:open");
+
+    expect(captured).toHaveBeenCalledTimes(1);
+    expect(captured.calls.argsFor(0)[0]).toBe(first);
+  });
+
+  it("does not redirect a window control to the document in that window", async () => {
     const extra = await lumine.workspace.openEditorWindow({ show: false });
     extra.getEditorContainer().getActivePane().activateItem(second, { activatePane: true });
     firstPane.activate();
@@ -43,11 +59,11 @@ describe("documentation-view menu commands in captured presentation contexts", (
 
     await lumine.commands.dispatch(button, "documentation-view:open");
 
-    expect(captured).toHaveBeenCalledTimes(1);
-    expect(captured.calls.argsFor(0)[0]).toBe(second);
+    expect(lumine.commands.canDispatch(button, "documentation-view:open")).toBe(false);
+    expect(captured).not.toHaveBeenCalled();
   });
 
-  it("uses a captured notebook cell from a non-editor command target", async () => {
+  it("does not redirect a notebook control to its active cell editor", async () => {
     const element = document.createElement("div");
     const button = document.createElement("button");
     element.appendChild(button);
@@ -67,8 +83,8 @@ describe("documentation-view menu commands in captured presentation contexts", (
 
     await lumine.commands.dispatch(button, "documentation-view:open");
 
-    expect(captured).toHaveBeenCalledTimes(1);
-    expect(captured.calls.argsFor(0)[0]).toBe(second);
+    expect(lumine.commands.canDispatch(button, "documentation-view:open")).toBe(false);
+    expect(captured).not.toHaveBeenCalled();
   });
 
   it("does not select a shared main editor when the invoking presentation has no document", async () => {
