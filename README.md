@@ -23,9 +23,12 @@ To install `documentation-view` search for it in the Install pane of the Lumine 
 
 Commands available in `lumine-workspace`:
 
-- `documentation-view:open`: request help at the source cursor and reveal the panel while keeping focus in the editor,
 - `documentation-view:toggle`: show or hide the panel,
 - `documentation-view:toggle-focus`: focus the panel or return focus to the editor.
+
+Commands available in `lumine-text-editor:not([mini])`:
+
+- `documentation-view:open`: request help at the source cursor and reveal the panel while keeping focus in the editor.
 
 Commands available in `.documentation-view`:
 
