@@ -2,6 +2,7 @@ describe("documentation-view startup restoration", () => {
   let pack;
 
   beforeEach(async () => {
+    jasmine.useRealClock();
     if (lumine.packages.getLoadedPackage("documentation-view"))
       await lumine.packages.unloadPackage("documentation-view", { serialize: false });
     pack = lumine.packages.loadPackage("documentation-view");
@@ -39,5 +40,36 @@ describe("documentation-view startup restoration", () => {
     const view = pack.mainModule.deserializeDocumentationView();
     await pack.deactivate();
     expect(view.destroyed).toBe(true);
+  });
+
+  it("retires the restored pane before unload finishes even when pane closure is delayed", async () => {
+    const view = pack.mainModule.deserializeDocumentationView();
+    const pane = lumine.workspace.getRightDock().getActivePane();
+    pane.addItem(view);
+    let release;
+    const listener = pane.onWillDestroyItem(({ item }) => {
+      if (item !== view) return;
+      return new Promise((resolve) => (release = resolve));
+    });
+    let finished = false;
+    const stopping = lumine.packages
+      .unloadPackage("documentation-view", { serialize: false })
+      .then(() => {
+        finished = true;
+      });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    try {
+      expect(finished && !view.destroyed).toBe(false);
+      release?.();
+      await stopping;
+      expect(view.destroyed).toBe(true);
+      expect(pane.getItems()).not.toContain(view);
+      expect(view.subscriptions.disposed).toBe(true);
+    } finally {
+      release?.();
+      listener.dispose();
+      await stopping;
+      view.destroy();
+    }
   });
 });
