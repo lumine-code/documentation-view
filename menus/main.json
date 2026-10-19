@@ -20,10 +20,10 @@
       "label": "Help",
       "submenu": [
         {
-          "label": "Show Symbol Documentation",
+          "label": "Symbol Documentation…",
           "command": "documentation-view:open",
-          "group": "documentation",
-          "order": 30
+          "group": "references",
+          "order": 10
         }
       ]
     },
