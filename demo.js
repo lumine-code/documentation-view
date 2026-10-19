@@ -5,7 +5,7 @@ module.exports = {
     "language-typescript",
     "marker",
     "linter",
-    "linter-panel",
+    "diagnostics",
     "hover",
     "ide",
     "ide-typescript",
