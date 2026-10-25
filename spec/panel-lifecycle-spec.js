@@ -11,6 +11,8 @@ function deferred() {
 describe("documentation panel request lifecycle", () => {
   let main, editor, editorView, disposables;
   beforeEach(async () => {
+    const textGrammarPackage = await lumine.packages.activatePackage("language-text");
+    await textGrammarPackage.resourceLoadPromise;
     jasmine.attachToDOM(lumine.views.getView(lumine.workspace));
     await lumine.packages.activatePackage("documentation-view");
     main = lumine.packages.getActivePackage("documentation-view").mainModule;
@@ -30,6 +32,50 @@ describe("documentation panel request lifecycle", () => {
   function snapshot(contents) {
     return { editor, position: [0, 1], contents: [contents] };
   }
+
+  it("disposes retained rendered content immediately when its source switches to None", async () => {
+    const cleanup = jasmine.createSpy("dispose retained documentation");
+    const element = document.createElement("div");
+    element.textContent = "Retained documentation";
+    const view = main.ensureView();
+    await view.showResult(snapshot({ render: () => ({ element, dispose: cleanup }) }));
+    expect(view.body.textContent).toContain("Retained documentation");
+    editor.setGrammar(lumine.grammars.nullGrammar);
+    expect(cleanup).toHaveBeenCalledTimes(1);
+    expect(view.source).toBeNull();
+    expect(view.rendered).toBeNull();
+    expect(view.body.textContent).not.toContain("Retained documentation");
+    expect(view.refreshButton.disabled).toBeTrue();
+  });
+
+  it("discards and disposes a late snapshot render after None is selected", async () => {
+    const pending = deferred();
+    const cleanup = jasmine.createSpy("dispose late documentation");
+    const view = main.ensureView();
+    const transfer = view.showResult(snapshot({ render: () => pending.promise }));
+    editor.setGrammar(lumine.grammars.nullGrammar);
+    pending.resolve({ element: document.createElement("div"), dispose: cleanup });
+    expect(await transfer).toBeFalse();
+    expect(cleanup).toHaveBeenCalledTimes(1);
+    expect(view.source).toBeNull();
+    expect(view.rendered).toBeNull();
+  });
+
+  it("does not open a panel or invoke a provider for None and restores the command with a grammar", async () => {
+    const grammar = editor.getGrammar();
+    const help = jasmine.createSpy("help").and.returnValue({ contents: { value: "Current help" } });
+    add(help);
+    editor.setGrammar(lumine.grammars.nullGrammar);
+    expect(lumine.commands.canDispatch(editorView, "documentation-view:open")).toBeFalse();
+    await main.openAtCursor({ target: editorView });
+    expect(main.view).toBeNull();
+    expect(help).not.toHaveBeenCalled();
+    editor.setGrammar(grammar);
+    expect(lumine.commands.canDispatch(editorView, "documentation-view:open")).toBeTrue();
+    await main.openAtCursor({ target: editorView });
+    expect(help).toHaveBeenCalledTimes(1);
+    expect(main.view.body.textContent).toContain("Current help");
+  });
 
   it("does not report a snapshot transfer as successful when Clear supersedes it", async () => {
     const pending = deferred();

@@ -1,6 +1,8 @@
 describe("Documentation retained-source command availability", () => {
   let view;
   beforeEach(async () => {
+    const textGrammarPackage = await lumine.packages.activatePackage("language-text");
+    await textGrammarPackage.resourceLoadPromise;
     jasmine.attachToDOM(lumine.workspace.getElement());
     await lumine.packages.activatePackage("documentation-view");
     view = await lumine.workspace.open("lumine://documentation-view");

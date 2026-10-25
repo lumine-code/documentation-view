@@ -12,6 +12,8 @@ describe("context-help provider lifecycle", () => {
   let main, registry, editor, disposables, customEditors;
 
   beforeEach(async () => {
+    const textGrammarPackage = await lumine.packages.activatePackage("language-text");
+    await textGrammarPackage.resourceLoadPromise;
     await lumine.packages.activatePackage("documentation-view");
     main = lumine.packages.getActivePackage("documentation-view").mainModule;
     registry = main.provideContextHelpRegistry();
@@ -42,6 +44,22 @@ describe("context-help provider lifecycle", () => {
     customEditors.push(customEditor);
     return customEditor;
   }
+
+  it("never asks wildcard providers to read None and resumes after grammar selection", async () => {
+    const grammar = editor.getGrammar();
+    const help = jasmine.createSpy("context help").and.callFake((source) => ({
+      contents: { value: source.getText() },
+    }));
+    add({ getHelp: help });
+    editor.setGrammar(lumine.grammars.nullGrammar);
+    const read = spyOn(editor, "getText").and.callThrough();
+    expect(await registry.request(editor, [0, 1])).toBeNull();
+    expect(help).not.toHaveBeenCalled();
+    expect(read).not.toHaveBeenCalled();
+    editor.setGrammar(grammar);
+    expect((await registry.request(editor, [0, 1])).contents[0].value).toBe("word other");
+    expect(help).toHaveBeenCalledTimes(1);
+  });
 
   it("excludes an old reply when the same provider object is registered again", async () => {
     const pending = deferred();

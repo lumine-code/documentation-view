@@ -2,6 +2,8 @@ describe("documentation-view startup restoration", () => {
   let pack;
 
   beforeEach(async () => {
+    const textGrammarPackage = await lumine.packages.activatePackage("language-text");
+    await textGrammarPackage.resourceLoadPromise;
     jasmine.useRealClock();
     if (lumine.packages.getLoadedPackage("documentation-view"))
       await lumine.packages.unloadPackage("documentation-view", { serialize: false });

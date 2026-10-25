@@ -3,6 +3,8 @@ const { CompositeDisposable } = require("lumine");
 describe("documentation-view", () => {
   let main, editor, editorView, disposables;
   beforeEach(async () => {
+    const textGrammarPackage = await lumine.packages.activatePackage("language-text");
+    await textGrammarPackage.resourceLoadPromise;
     jasmine.attachToDOM(lumine.views.getView(lumine.workspace));
     await lumine.packages.activatePackage("documentation-view");
     main = lumine.packages.getActivePackage("documentation-view").mainModule;

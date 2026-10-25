@@ -2,6 +2,8 @@ describe("Documentation panel render error lifetime", () => {
   let main, editor;
 
   beforeEach(async () => {
+    const textGrammarPackage = await lumine.packages.activatePackage("language-text");
+    await textGrammarPackage.resourceLoadPromise;
     jasmine.attachToDOM(lumine.workspace.getElement());
     editor = await lumine.workspace.open();
     editor.setText("documented symbol");

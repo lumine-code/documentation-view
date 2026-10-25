@@ -11,6 +11,8 @@ const deferred = () => {
 describe("context-help registry", () => {
   let main, service, editor, disposables;
   beforeEach(async () => {
+    const textGrammarPackage = await lumine.packages.activatePackage("language-text");
+    await textGrammarPackage.resourceLoadPromise;
     await lumine.packages.activatePackage("documentation-view");
     main = lumine.packages.getActivePackage("documentation-view").mainModule;
     service = main.provideContextHelpRegistry();

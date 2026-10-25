@@ -12,6 +12,8 @@ beforeEach(() => {
 describe("Documentation source identity", () => {
   let main, editor, lease, scratch, temporary;
   beforeEach(async () => {
+    const textGrammarPackage = await lumine.packages.activatePackage("language-text");
+    await textGrammarPackage.resourceLoadPromise;
     jasmine.useRealClock();
     if (lumine.packages.isPackageLoaded("documentation-view"))
       await lumine.packages.unloadPackage("documentation-view");
@@ -49,7 +51,7 @@ describe("Documentation source identity", () => {
   }
   function change(kind) {
     if (kind === "path") editor.getBuffer().setPath(path.join(scratch, "after.txt"));
-    else editor.setGrammar(lumine.grammars.nullGrammar);
+    else editor.setGrammar(lumine.grammars.grammarForScopeName("text.plain"));
   }
   for (const kind of ["path", "grammar"]) {
     it(`drops a fresh pending answer when its ${kind} changes without text or cursor edits`, async () => {

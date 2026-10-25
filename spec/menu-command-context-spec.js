@@ -5,6 +5,8 @@ describe("documentation-view menu commands in captured presentation contexts", (
   let main, first, second, firstPane, notebook, lease, captured;
 
   beforeEach(async () => {
+    const textGrammarPackage = await lumine.packages.activatePackage("language-text");
+    await textGrammarPackage.resourceLoadPromise;
     jasmine.useRealClock();
     for (const method of ["openExternal", "openPath", "showItemInFolder", "openApplication"])
       if (!jasmine.isSpy(lumine.shell[method])) spyOn(lumine.shell, method).and.resolveTo();
