@@ -27,9 +27,6 @@
   overflow: auto;
   user-select: text;
 }
-.documentation-view-status {
-  padding: var(--ui-spacing);
-}
 .context-help-content {
   font-family: var(--ui-font-family);
   font-size: var(--prose-font-size);

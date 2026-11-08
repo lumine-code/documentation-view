@@ -33,6 +33,23 @@ describe("documentation-view", () => {
     expect(editorView.hasFocus()).toBe(true);
   });
 
+  it("shows the shared empty body before help and after clearing without replacing its toolbar", async () => {
+    const view = main.ensureView();
+    const header = view.header;
+    expect(view.body.classList.contains("panel-empty-state")).toBeTrue();
+    expect(view.body.querySelector("background-tips .background-message")).not.toBeNull();
+    add(() => ({ contents: { value: "Selected documentation" } }));
+    await main.openAtCursor({ target: editorView });
+    expect(view.body.classList.contains("panel-empty-state")).toBeFalse();
+    expect(view.body.textContent).toContain("Selected documentation");
+    view.clear();
+    expect(view.header).toBe(header);
+    expect(view.clearButton.isConnected).toBeTrue();
+    expect(view.body.classList.contains("panel-empty-state")).toBeTrue();
+    expect(view.body.querySelector("background-tips .background-message")).not.toBeNull();
+    expect(view.body.textContent).not.toContain("Selected documentation");
+  });
+
   it("retains help when the cursor and active file change", async () => {
     const getHelp = jasmine
       .createSpy("getHelp")
