@@ -33,6 +33,43 @@ describe("documentation-view", () => {
     expect(editorView.hasFocus()).toBe(true);
   });
 
+  it("scrolls readonly help without treating refreshes or toolbar controls as navigation", async () => {
+    add(() => ({ contents: { value: "Keyboard-readable documentation" } }));
+    await main.openAtCursor({ target: editorView });
+    const view = main.view;
+    const body = view.body;
+    const reveal = spyOn(lumine.scrollbars, "reveal");
+    await view.refresh();
+    expect(reveal).not.toHaveBeenCalled();
+    const filler = document.createElement("div");
+    filler.style.minHeight = "1200px";
+    body.append(filler);
+    body.style.height = "120px";
+    body.style.maxHeight = "120px";
+    body.scrollTop = 0;
+    lumine.keymaps.loadBundledKeymaps();
+    body.focus();
+    const key = new KeyboardEvent("keydown", { key: "ArrowDown", cancelable: true });
+    Object.defineProperty(key, "target", { value: body });
+    lumine.keymaps.handleKeyboardEvent(key);
+    expect(key.defaultPrevented).toBeTrue();
+    expect(body.scrollTop).toBeGreaterThan(0);
+    expect(reveal).toHaveBeenCalledOnceWith(body);
+    expect(lumine.commands.canDispatch(view.refreshButton, "core:move-down")).toBeFalse();
+    await lumine.commands.dispatch(view.refreshButton, "core:move-down");
+    expect(reveal).toHaveBeenCalledTimes(1);
+  });
+
+  it("releases its help-body navigation binding on close", async () => {
+    add(() => ({ contents: { value: "Documentation" } }));
+    await main.openAtCursor({ target: editorView });
+    const view = main.view;
+    const body = view.body;
+    expect(lumine.scrollbars.navigationBindings.has(body)).toBeTrue();
+    await lumine.workspace.paneForItem(view).destroyItem(view, true);
+    expect(lumine.scrollbars.navigationBindings.has(body)).toBeFalse();
+  });
+
   it("shows the shared empty body before help and after clearing without replacing its toolbar", async () => {
     const view = main.ensureView();
     const header = view.header;
